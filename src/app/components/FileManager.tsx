@@ -46,7 +46,7 @@ export async function FileManager() {
                     {file.name}
                   </Link>
                 </div>
-                <div className="flex gap-2 text-gray-500">
+                <div className="flex gap-2 text-gray-500 text-nowrap">
                   <span>
                     {dayjs(file.uploadAt).format("YYYY-MM-DD HH:mm:ss")}
                   </span>
