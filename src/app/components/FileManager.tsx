@@ -22,7 +22,7 @@ export async function FileManager() {
       <Table size="small">
         <TableHead className="bg-gray-200">
           <TableRow>
-            <TableCell>Name</TableCell>
+            <TableCell>File</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
