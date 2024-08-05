@@ -23,33 +23,36 @@ export async function FileManager() {
         <TableHead className="bg-gray-200">
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell>Uploaded At</TableCell>
-            <TableCell>Size</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.length === 0 && (
             <TableRow>
-              <TableCell colSpan={4} align="center">No Files</TableCell>
+              <TableCell colSpan={2} align="center">
+                No Files
+              </TableCell>
             </TableRow>
           )}
           {rows.map(([_, file]) => (
             <TableRow key={file.name} hover>
               <TableCell>
-                <Link
-                  href={`/file/${file.name}`}
-                  target="_blank"
-                  className="text-sky-700"
-                >
-                  {file.name}
-                </Link>
-              </TableCell>
-              <TableCell>
-                {dayjs(file.uploadAt).format("YYYY-MM-DD HH:mm:ss")}
-              </TableCell>
-              <TableCell className="text-nowrap">
-                {filesize(file.size).toUpperCase()}
+                <div>
+                  <Link
+                    href={`/file/${file.name}`}
+                    target="_blank"
+                    className="text-sky-700"
+                  >
+                    {file.name}
+                  </Link>
+                </div>
+                <div className="flex gap-2 text-gray-500">
+                  <span>
+                    {dayjs(file.uploadAt).format("YYYY-MM-DD HH:mm:ss")}
+                  </span>
+                  <span>/</span>
+                  <span> {filesize(file.size).toUpperCase()}</span>
+                </div>
               </TableCell>
               <TableCell align="center">
                 <RemoveButton file={file} />
