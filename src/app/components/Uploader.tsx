@@ -37,8 +37,6 @@ export function Uploader(props: UploaderProps) {
   async function handleUpload(formData: FormData) {
     try {
       state.error = null;
-      state.uploading = true;
-
       await upload(formData);
 
       location.reload();
@@ -52,6 +50,7 @@ export function Uploader(props: UploaderProps) {
     if (state.uploading) {
       return;
     }
+    state.uploading = true;
     formRef.current?.requestSubmit();
   }
 

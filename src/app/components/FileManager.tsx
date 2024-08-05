@@ -51,7 +51,7 @@ export async function FileManager() {
               <TableCell className="text-nowrap">
                 {filesize(file.size).toUpperCase()}
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
                 <RemoveButton file={file} />
               </TableCell>
             </TableRow>
