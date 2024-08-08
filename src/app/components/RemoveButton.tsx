@@ -1,10 +1,8 @@
 "use client";
 
 import { remove } from "../actions";
+import { SubmitButton } from "./SubmitButton";
 import { FileItem } from "@/typings/file";
-import { cn } from "@/utils/cn";
-import { CircularProgress } from "@mui/material";
-import { useReactive } from "ahooks";
 import React from "react";
 
 export interface RemoveButtonProps {
@@ -14,37 +12,16 @@ export interface RemoveButtonProps {
 export function RemoveButton(props: RemoveButtonProps) {
   const { file } = props;
 
-  const state = useReactive({
-    pending: false,
-  });
-
   async function handleDelete() {
-    if (state.pending) {
-      return;
-    }
-
-    try {
-      state.pending = true;
-
-      if (confirm(`Are you sure to remove: ${file.name} ?`)) {
-        await remove(file.key);
-        location.reload();
-      }
-    } catch (err: any) {
-      alert(err.message);
-      state.pending = false;
+    if (confirm(`Are you sure to remove: ${file.name} ?`)) {
+      await remove(file.key);
+      location.reload();
     }
   }
 
   return (
-    <div
-      className={cn(
-        "text-red-700 cursor-pointer hover:text-red-800",
-        state.pending && "cursor-not-allowed ",
-      )}
-      onClick={handleDelete}
-    >
-      {state.pending ? <CircularProgress size={16} /> : "Delete"}
-    </div>
+    <form action={handleDelete}>
+      <SubmitButton color="error">Delete</SubmitButton>
+    </form>
   );
 }

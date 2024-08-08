@@ -55,5 +55,9 @@ export async function upload(formData: FormData) {
 }
 
 export async function remove(key: string) {
+  if (!key) {
+    return "invalid key";
+  }
+
   await bucket.delete(key);
 }
