@@ -1,9 +1,8 @@
 import { FileSizeOptions, filesize as fs } from "filesize";
 
 export function filesize(byteCount: number, opts?: FileSizeOptions) {
-  const options = {
+  const options: FileSizeOptions = {
     pad: true,
-    precision: 2,
     ...opts,
   };
 
