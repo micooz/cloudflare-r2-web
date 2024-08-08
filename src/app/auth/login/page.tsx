@@ -18,21 +18,22 @@ export default function Page() {
       password: "",
     },
     pending: false,
-    error: null as Error | null,
+    error: "",
   });
 
   async function handleLogin() {
-    try {
-      state.pending = true;
-      state.error = null;
+    state.pending = true;
+    state.error = "";
 
-      await login({ ...state.formData });
+    const err = await login({ ...state.formData });
 
-      router.replace("/");
-    } catch (err: any) {
-      state.error = err;
+    if (err) {
+      state.error = err.message;
       state.pending = false;
+      return;
     }
+
+    router.replace("/");
   }
 
   return (
@@ -70,7 +71,7 @@ export default function Page() {
 
       {state.error && (
         <Alert icon={<ErrorIcon fontSize="inherit" />} severity="error">
-          {state.error.message}
+          {state.error}
         </Alert>
       )}
     </div>

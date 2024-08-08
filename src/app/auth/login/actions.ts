@@ -18,6 +18,6 @@ export async function login(formData: LoginFormData) {
   });
 
   if (error) {
-    throw error;
+    return { message: error.message };
   }
 }
