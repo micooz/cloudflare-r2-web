@@ -1,5 +1,6 @@
 import { RemoveButton } from "./RemoveButton";
 import { list } from "./actions";
+import { filesize } from "@/utils/format";
 import {
   Table,
   TableBody,
@@ -9,7 +10,6 @@ import {
   TableRow,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { filesize } from "filesize";
 import Link from "next/link";
 
 export async function FileManager() {
