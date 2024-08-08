@@ -1,4 +1,5 @@
 import { bucket } from "@/app/common/bucket";
+import { checkAuth } from "@/utils/auth";
 import { kebabCase } from "lodash-es";
 
 // GET /file/xxx
@@ -6,6 +7,8 @@ export async function GET(
   request: Request,
   { params }: { params: { key: string } },
 ) {
+  await checkAuth();
+
   const fileObject = await bucket.get(params.key);
 
   if (fileObject === null) {

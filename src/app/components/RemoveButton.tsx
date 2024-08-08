@@ -1,6 +1,6 @@
 "use client";
 
-import { remove } from "./actions";
+import { remove } from "../actions";
 import { FileItem } from "@/typings/file";
 import { cn } from "@/utils/cn";
 import { CircularProgress } from "@mui/material";

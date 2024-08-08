@@ -1,7 +1,8 @@
 "use server";
 
-import { bucket } from "../common/bucket";
+import { bucket } from "./common/bucket";
 import { FileItem } from "@/typings/file";
+import { getUser } from "@/utils/auth";
 import { hashFile } from "@/utils/crypto";
 import { sortBy } from "lodash-es";
 
@@ -30,6 +31,8 @@ export async function upload(formData: FormData) {
     throw new Error("invalid submit data");
   }
 
+  const user = await getUser();
+
   const sha256 = await hashFile(file, "SHA-256");
 
   await bucket.put(sha256, file, {
@@ -39,7 +42,14 @@ export async function upload(formData: FormData) {
       contentDisposition: `attachment; filename=${encodeURIComponent(file.name)}`,
     },
     customMetadata: {
+      // file name
       name: file.name,
+      // user info
+      user: JSON.stringify({
+        id: user?.id || null,
+        email: user?.email || null,
+        nickname: user?.user_metadata.nickname || null,
+      }),
     },
   });
 }

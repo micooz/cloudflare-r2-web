@@ -1,6 +1,6 @@
 "use client";
 
-import { upload } from "./actions";
+import { upload } from "../actions";
 import { cn } from "@/utils/cn";
 import styled from "@emotion/styled";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
