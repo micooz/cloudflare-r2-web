@@ -1,5 +1,6 @@
 export interface FileItem {
+  key: string;
   name: string;
-  uploadAt: number;
+  uploaded: number;
   size: number;
 }

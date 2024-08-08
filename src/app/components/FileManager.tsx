@@ -1,5 +1,5 @@
 import { RemoveButton } from "./RemoveButton";
-import { getLsData } from "./actions";
+import { list } from "./actions";
 import {
   Table,
   TableBody,
@@ -13,9 +13,7 @@ import { filesize } from "filesize";
 import Link from "next/link";
 
 export async function FileManager() {
-  const lsData = await getLsData();
-
-  const rows = Object.entries(lsData.files);
+  const files = await list();
 
   return (
     <TableContainer>
@@ -27,19 +25,19 @@ export async function FileManager() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.length === 0 && (
+          {files.length === 0 && (
             <TableRow>
               <TableCell colSpan={2} align="center">
                 No Files
               </TableCell>
             </TableRow>
           )}
-          {rows.map(([_, file]) => (
-            <TableRow key={file.name} hover>
+          {files.map((file) => (
+            <TableRow key={file.key} hover>
               <TableCell>
                 <div>
                   <Link
-                    href={`/file/${file.name}`}
+                    href={`/file/${file.key}`}
                     target="_blank"
                     className="text-sky-700"
                   >
@@ -48,13 +46,13 @@ export async function FileManager() {
                 </div>
                 <div className="flex gap-2 text-gray-500 text-nowrap">
                   <span>
-                    {dayjs(file.uploadAt).format("YYYY-MM-DD HH:mm:ss")}
+                    {dayjs(file.uploaded).format("YYYY-MM-DD HH:mm:ss")}
                   </span>
                   <span>/</span>
-                  <span> {filesize(file.size).toUpperCase()}</span>
+                  <span>{filesize(file.size).toUpperCase()}</span>
                 </div>
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="right">
                 <RemoveButton file={file} />
               </TableCell>
             </TableRow>

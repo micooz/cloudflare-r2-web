@@ -3,6 +3,10 @@ import { getRequestContext } from "@cloudflare/next-on-pages";
 export class CfR2Bucket {
   constructor(private bindingKey: keyof CloudflareEnv) {}
 
+  async list(opts?: R2ListOptions) {
+    return this.bucket.list(opts);
+  }
+
   async get(key: string) {
     return this.bucket.get(key);
   }
@@ -16,8 +20,9 @@ export class CfR2Bucket {
       | string
       | null
       | Blob,
+    opts?: R2PutOptions,
   ) {
-    return this.bucket.put(key, value);
+    return this.bucket.put(key, value, opts);
   }
 
   async delete(key: string) {

@@ -20,9 +20,11 @@
     "@mui/lab": "^5.0.0-alpha.172",
     "@mui/material": "^5.16.0",
     "@mui/material-nextjs": "^5.15.11",
+    "@types/lodash-es": "^4.17.12",
     "ahooks": "^3.8.0",
     "dayjs": "^1.11.11",
     "filesize": "^10.1.4",
+    "lodash-es": "^4.17.21",
     "next": "^14.2.0",
     "react": "^18",
     "react-dom": "^18"

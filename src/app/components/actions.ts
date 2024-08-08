@@ -1,29 +1,26 @@
 "use server";
 
+import { bucket } from "../common/bucket";
 import { FileItem } from "@/typings/file";
-import { CfR2Bucket } from "@/utils/cf-r2-bucket";
+import { hashFile } from "@/utils/crypto";
+import { sortBy } from "lodash-es";
 
-type LsData = {
-  files: Record<string, FileItem>;
-};
+export async function list() {
+  const files = await bucket.list({
+    include: ["customMetadata", "httpMetadata"],
+  });
 
-export async function getLsData(): Promise<LsData> {
-  const bucket = new CfR2Bucket("MY_BUCKET");
+  const objects = files.objects.map(
+    (item) =>
+      ({
+        key: item.key,
+        name: item.customMetadata?.["name"] || item.key,
+        uploaded: item.uploaded.getTime(),
+        size: item.size,
+      }) as FileItem,
+  );
 
-  const lsObject = await bucket.get("ls.json");
-
-  let lsData = { files: {} };
-
-  if (lsObject) {
-    lsData = await lsObject.json();
-  }
-
-  return lsData;
-}
-
-export async function setLsData(lsData: LsData) {
-  const bucket = new CfR2Bucket("MY_BUCKET");
-  await bucket.put("ls.json", JSON.stringify(lsData));
+  return sortBy(objects, (item) => item.uploaded);
 }
 
 export async function upload(formData: FormData) {
@@ -33,26 +30,20 @@ export async function upload(formData: FormData) {
     throw new Error("invalid submit data");
   }
 
-  const lsData = await getLsData();
+  const sha256 = await hashFile(file, "SHA-256");
 
-  lsData.files[file.name] = {
-    name: file.name,
-    uploadAt: Date.now(),
-    size: file.size,
-  };
-
-  const bucket = new CfR2Bucket("MY_BUCKET");
-  await bucket.put(file.name, file);
-
-  await setLsData(lsData);
+  await bucket.put(sha256, file, {
+    sha256,
+    httpMetadata: {
+      contentType: file.type,
+      contentDisposition: `attachment; filename=${encodeURIComponent(file.name)}`,
+    },
+    customMetadata: {
+      name: file.name,
+    },
+  });
 }
 
 export async function remove(key: string) {
-  const lsData = await getLsData();
-  delete lsData.files[key];
-
-  await setLsData(lsData);
-
-  const bucket = new CfR2Bucket("MY_BUCKET");
   await bucket.delete(key);
 }

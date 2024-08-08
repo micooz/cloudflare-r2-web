@@ -27,7 +27,7 @@ export function RemoveButton(props: RemoveButtonProps) {
       state.pending = true;
 
       if (confirm(`Are you sure to remove: ${file.name} ?`)) {
-        await remove(file.name);
+        await remove(file.key);
         location.reload();
       }
     } catch (err: any) {
@@ -39,7 +39,6 @@ export function RemoveButton(props: RemoveButtonProps) {
   return (
     <div
       className={cn(
-        "w-24",
         "text-red-700 cursor-pointer hover:text-red-800",
         state.pending && "cursor-not-allowed ",
       )}
