@@ -2,11 +2,13 @@
 
 import { bucket } from "./common/bucket";
 import { FileItem } from "@/typings/file";
-import { getUser } from "@/utils/auth";
+import { checkAuth, getUser } from "@/utils/auth";
 import { hashFile } from "@/utils/crypto";
 import { sortBy } from "lodash-es";
 
 export async function list() {
+  await checkAuth();
+
   const files = await bucket.list({
     include: ["customMetadata", "httpMetadata"],
   });
@@ -25,6 +27,8 @@ export async function list() {
 }
 
 export async function upload(formData: FormData) {
+  await checkAuth();
+
   const file = formData.get("file") as File;
 
   if (!file) {
@@ -55,6 +59,8 @@ export async function upload(formData: FormData) {
 }
 
 export async function remove(key: string) {
+  await checkAuth();
+
   if (!key) {
     return "invalid key";
   }
