@@ -58,6 +58,7 @@ export function Uploader(props: UploaderProps) {
           file,
         },
         {
+          adapter: "fetch",
           onUploadProgress(progressEvent) {
             state.progress = progressEvent.progress || 0;
           },
