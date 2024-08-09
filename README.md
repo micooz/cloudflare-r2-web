@@ -41,3 +41,10 @@ SENTRY_PROJECT=
 SENTRY_AUTH_TOKEN=
 SENTRY_DSN=
 ```
+
+# Deploy to Cloudflare Pages
+
+- Fork this repository.
+- Modify `wrangler.toml`.
+- Follow [Cloudflare Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration).
+- **(optional)** Add environment variables to `Pages Settings`, trigger deploy again.
