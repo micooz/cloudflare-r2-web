@@ -81,7 +81,8 @@ export function Uploader(props: UploaderProps) {
     <div>
       <div className="mb-2">
         {state.uploading ? (
-          <LinearProgress variant="determinate" value={state.progress} />
+          <LinearProgress />
+          // <LinearProgress variant="determinate" value={state.progress} />
         ) : (
           <div className="h-[4px] " />
         )}
