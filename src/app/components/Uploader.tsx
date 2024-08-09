@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Alert, LinearProgress } from "@mui/material";
 import { useReactive } from "ahooks";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useRef } from "react";
 
 const VisuallyHiddenInput = styled("input")({
@@ -27,6 +28,8 @@ interface UploaderProps {
 export function Uploader(props: UploaderProps) {
   const { className } = props;
 
+  const router = useRouter();
+
   const state = useReactive({
     error: null as Error | null,
     uploading: false,
@@ -38,10 +41,10 @@ export function Uploader(props: UploaderProps) {
     try {
       state.error = null;
       await upload(formData);
-
-      location.reload();
+      router.refresh();
     } catch (err: any) {
       state.error = err;
+    } finally {
       state.uploading = false;
     }
   }
@@ -56,7 +59,9 @@ export function Uploader(props: UploaderProps) {
 
   return (
     <form ref={formRef} action={handleUpload}>
-      {state.uploading && <LinearProgress className="mb-4" />}
+      <div className="mb-2">
+        {state.uploading ? <LinearProgress /> : <div className="h-[4px] " />}
+      </div>
 
       {state.error && (
         <Alert className="mb-4" severity="error">

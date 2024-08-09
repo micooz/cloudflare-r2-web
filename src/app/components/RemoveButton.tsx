@@ -3,6 +3,7 @@
 import { remove } from "../actions";
 import { SubmitButton } from "./SubmitButton";
 import { FileItem } from "@/typings/file";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export interface RemoveButtonProps {
@@ -12,10 +13,12 @@ export interface RemoveButtonProps {
 export function RemoveButton(props: RemoveButtonProps) {
   const { file } = props;
 
+  const router = useRouter();
+
   async function handleDelete() {
     if (confirm(`Are you sure to remove: ${file.name} ?`)) {
       await remove(file.key);
-      location.reload();
+      router.refresh();
     }
   }
 

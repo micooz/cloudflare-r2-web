@@ -11,7 +11,7 @@ export default async function Page() {
   return (
     <div>
       <AppHeader />
-      <div className={cn("p-4 flex flex-col gap-4")}>
+      <div className={cn("p-4 pt-[0.6rem] flex flex-col gap-4")}>
         <Uploader />
         <FileManager />
       </div>
