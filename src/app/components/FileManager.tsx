@@ -40,6 +40,7 @@ export async function FileManager() {
                     href={`/file/${file.key}`}
                     target="_blank"
                     className="text-sky-700"
+                    prefetch={false}
                   >
                     {file.name}
                   </Link>
