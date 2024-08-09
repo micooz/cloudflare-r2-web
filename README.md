@@ -47,4 +47,4 @@ SENTRY_DSN=
 - Fork this repository.
 - Modify `wrangler.toml`.
 - Follow [Cloudflare Pages Git integration](https://developers.cloudflare.com/pages/get-started/git-integration).
-- **(optional)** Add environment variables to `Pages Settings`, trigger deploy again.
+- **(optional)** Add environment variables to `Settings / Environment variables`, don't forget to click `Encrypt`, then trigger deploy again.

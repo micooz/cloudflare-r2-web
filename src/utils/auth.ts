@@ -14,8 +14,6 @@ export async function checkAuth() {
   if (!user) {
     return redirect("/auth/login");
   }
-
-  return;
 }
 
 export async function getUser() {

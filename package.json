@@ -25,6 +25,7 @@
     "@supabase/supabase-js": "^2.45.0",
     "@types/lodash-es": "^4.17.12",
     "ahooks": "^3.8.0",
+    "axios": "^1.7.3",
     "dayjs": "^1.11.11",
     "filesize": "^10.1.4",
     "lodash-es": "^4.17.21",

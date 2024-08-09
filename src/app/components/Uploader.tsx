@@ -1,11 +1,11 @@
 "use client";
 
-import { upload } from "../actions";
 import { cn } from "@/utils/cn";
 import styled from "@emotion/styled";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Alert, LinearProgress } from "@mui/material";
 import { useReactive } from "ahooks";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useRef } from "react";
 
@@ -30,37 +30,60 @@ export function Uploader(props: UploaderProps) {
 
   const router = useRouter();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const state = useReactive({
     error: null as Error | null,
     uploading: false,
+    progress: 0,
   });
 
-  const formRef = useRef<HTMLFormElement>(null);
+  async function handleFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
 
-  async function handleUpload(formData: FormData) {
+    if (!file) {
+      return;
+    }
+
+    state.uploading = true;
+    state.progress = 0;
+
     try {
       state.error = null;
-      await upload(formData);
+
+      // Next.js Server Action does not support upload progress, so use axios to do that.
+      await axios.postForm(
+        "/api/upload",
+        {
+          file,
+        },
+        {
+          onUploadProgress(progressEvent) {
+            state.progress = progressEvent.progress || 0;
+          },
+        },
+      );
+
       router.refresh();
     } catch (err: any) {
       state.error = err;
     } finally {
       state.uploading = false;
-    }
-  }
 
-  function handleFile(e: ChangeEvent<HTMLInputElement>) {
-    if (state.uploading) {
-      return;
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     }
-    state.uploading = true;
-    formRef.current?.requestSubmit();
   }
 
   return (
-    <form ref={formRef} action={handleUpload}>
+    <div>
       <div className="mb-2">
-        {state.uploading ? <LinearProgress /> : <div className="h-[4px] " />}
+        {state.uploading ? (
+          <LinearProgress variant="determinate" value={state.progress} />
+        ) : (
+          <div className="h-[4px] " />
+        )}
       </div>
 
       {state.error && (
@@ -82,12 +105,13 @@ export function Uploader(props: UploaderProps) {
         <CloudUploadIcon />
         <span>Choose a file to upload</span>
         <VisuallyHiddenInput
+          ref={inputRef}
           type="file"
           name="file"
           disabled={state.uploading}
           onChange={handleFile}
         />
       </label>
-    </form>
+    </div>
   );
 }
