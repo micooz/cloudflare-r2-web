@@ -8,11 +8,27 @@ A Cloudflare R2 web management interface built with Next.js.
 - **(optional)** Authorization by [Supabase Auth](https://supabase.com/docs/guides/auth).
 - **(optional)** Monitoring by [Sentry](https://sentry.io).
 
+# Bind to R2 Bucket
+
+In `wrangler.toml`, modify `bucket_name` under `r2_buckets`: 
+
+```toml
+# wrangler.toml
+
+[[r2_buckets]]
+binding = "MY_BUCKET" # DO NOT modify binding.
+bucket_name = "<Your R2 bucket name goes here>"
+```
+
+**Caveats**
+
+Only one bucket is supported by now.
+
 # Environment Variables
 
 To enable optional features, you should specify environment variables to your `.env` file or CI system (**recommend**).
 
-All supported environment variables listed bellow:
+All supported environment variables are listed bellow:
 
 ```shell
 # supabase
