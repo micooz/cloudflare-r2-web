@@ -58,7 +58,9 @@ export function Uploader(props: UploaderProps) {
           file,
         },
         {
-          adapter: "fetch",
+          // There is an issue related to Stream API using Fetch:
+          // https://github.com/axios/axios/pull/6524
+          // adapter: "fetch",
           onUploadProgress(progressEvent) {
             state.progress = progressEvent.progress || 0;
           },
@@ -81,8 +83,8 @@ export function Uploader(props: UploaderProps) {
     <div>
       <div className="mb-2">
         {state.uploading ? (
-          <LinearProgress />
-          // <LinearProgress variant="determinate" value={state.progress} />
+          // <LinearProgress />
+          <LinearProgress variant="determinate" value={state.progress} />
         ) : (
           <div className="h-[4px] " />
         )}
